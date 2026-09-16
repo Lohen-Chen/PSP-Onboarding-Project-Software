@@ -19,3 +19,6 @@ uint16_t readFromADCChannel(uint8_t channel){
 	HAL_SPI_TransmitReceive(&hspi1, txBuf, rxBuf, 3, 100);
 	HAL_GPIO_WritePin(ADC_CS_GPIO_Port, ADC_CS, GPIO_PIN_SET);
 }
+
+
+

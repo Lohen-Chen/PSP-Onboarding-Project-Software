@@ -9,6 +9,6 @@
 #ifndef INC_ADC_H_
 #define INC_ADC_H_
 
-uint16_t readFromADC(uint8_t channel);
+uint16_t readFromADCChannel(uint8_t channel);
 
 #endif /* INC_ADC_H_ */
