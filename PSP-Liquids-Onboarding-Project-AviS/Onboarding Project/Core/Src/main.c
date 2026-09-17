@@ -87,7 +87,7 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   osKernelInitialize();
-  readFromADCHandle = osThreadNew(getReadFromADC, NULL, &readFromADC_attributes);
+  readFromADCHandle = osThreadNew(readFromADCChannel(1), NULL, &readFromADC_attributes);
 
   BSP_LED_Init(LED_GREEN);
   BSP_LED_Init(LED_YELLOW);
@@ -263,10 +263,6 @@ static void MX_GPIO_Init(void)
   * @param  argument: Not used
   * @retval None
   */
-
-void getReadFromADC(uint8_t channel){
-	readFromADCChannel(channel);
-}
 
  /* MPU Configuration */
 
