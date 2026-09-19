@@ -67,7 +67,7 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
-
+void StartReadADCTask(void *argument);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -86,8 +86,6 @@ int main(void)
   SystemClock_Config();
   MX_GPIO_Init();
   MX_SPI1_Init();
-  osKernelInitialize();
-  readFromADCHandle = osThreadNew(readFromADCChannel(1), NULL, &readFromADC_attributes);
 
   BSP_LED_Init(LED_GREEN);
   BSP_LED_Init(LED_YELLOW);
@@ -104,6 +102,9 @@ int main(void)
   {
     Error_Handler();
   }
+
+  osKernelInitialize();
+  readFromADC = osThreadNew(StartReadADCTask, NULL, &readFromADC_attributes);
 
   /* Start scheduler */
   osKernelStart();
@@ -257,12 +258,20 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the readFromADC thread.
+  *         Polls the MCP3208 over SPI and reports each conversion over the VCP UART.
   * @param  argument: Not used
   * @retval None
   */
+void StartReadADCTask(void *argument)
+{
+  for (;;)
+  {
+    uint16_t adcValue = readFromADCChannel(1);
+    printf("ADC Channel 1: %u\n", adcValue);
+  }
+}
 
  /* MPU Configuration */
 
